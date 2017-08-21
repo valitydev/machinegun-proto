@@ -1,0 +1,11 @@
+{application, mg_proto, [
+    {description, "Thrift proto for machinegun"},
+    {vsn, "1"},
+    {applications, [
+        kernel,
+        stdlib
+    ]},
+    {maintainers, [
+        "Petr Kozorezov <petr.kozorezov@gmail.com>"
+    ]}
+]}.

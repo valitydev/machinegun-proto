@@ -1,0 +1,12 @@
+/_build/
+*~
+.tags*
+*.sublime-workspace
+.DS_Store
+*~
+\#*
+.\#*
+.tags*
+rebar3.crashdump
+include/*.hrl
+src/*.erl
