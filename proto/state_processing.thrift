@@ -331,6 +331,13 @@ service Automaton {
          throws (1: NamespaceNotFound ex1, 2: MachineNotFound ex2, 3: MachineFailed ex3);
 
     /**
+     * Попытаться перевести определённый процесс автомата из ошибочного
+     * состояния в предыдущее штатное и продолжить его исполнение.
+     */
+    void SimpleRepair (1: base.Namespace ns, 2: Reference ref)
+         throws (1: NamespaceNotFound ex1, 2: MachineNotFound ex2, 3: MachineFailed ex3);
+
+    /**
      * Совершить вызов и дождаться на него ответа.
      */
     CallResponse Call (1: MachineDescriptor desc, 2: Args a)
