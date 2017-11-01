@@ -1,4 +1,4 @@
-namespace erlang msgpack
+namespace erlang mg_msgpack
 
 /**
  * Значение в msgpack, согласно [спецификации](https://github.com/msgpack/msgpack/blob/master/spec.md).
