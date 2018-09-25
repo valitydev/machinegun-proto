@@ -18,11 +18,23 @@ exception MachineAlreadyExists {}
 exception MachineFailed {}
 exception MachineAlreadyWorking {}
 
-typedef msgpack.Value EventBody;
-typedef list<EventBody> EventBodies;
+struct Content {
+    /** Версия представления данных */
+    1: optional i32           format_version
+    2: required msgpack.Value data
+}
+
+typedef Content EventBody
+typedef list<EventBody> EventBodies
+
+typedef Content AuxState
 
 typedef msgpack.Value Args
-typedef msgpack.Value AuxState
+
+// deprecated
+typedef msgpack.Value EventBodyLegacy
+typedef list<EventBodyLegacy> EventBodiesLegacy
+typedef msgpack.Value AuxStateLegacy
 
 /**
  * Произвольное событие, продукт перехода в новое состояние.
@@ -33,9 +45,16 @@ struct Event {
      * Монотонно возрастающее целочисленное значение, таким образом на множестве
      * событий задаётся отношение полного порядка (total order).
      */
-    1: required base.EventID    id;
-    2: required base.Timestamp  created_at;     /* Время происхождения события */
-    4: required EventBody       event_payload;  /* Описание события */
+    1: required base.EventID    id
+    /** Время происхождения события */
+    2: required base.Timestamp  created_at
+
+    // Inlined from `Content`
+
+    /** Версия представления данных */
+    5: optional i32 format_version
+    /** Описание события */
+    4: required msgpack.Value data
 }
 
 /**
@@ -71,18 +90,21 @@ struct Machine {
      * Диапазон с которым была запрошена история машины.
      */
     4: required HistoryRange history_range;
+
     /**
      * Вспомогательное состояние — это некоторый набор данных, характеризующий состояние,
      * и в отличие от событий не сохраняется в историю, а каждый раз перезаписывается.
      * Бывает полезен, чтобы сохранить данные между запросами, не добавляя их в историю.
      */
-
-    5: optional AuxState aux_state;
+    7: optional AuxState aux_state;
 
     /**
      * Текущий активный таймер (точнее, дата и время когда таймер сработает).
      */
     6: optional base.Timestamp timer;
+
+    // deprecated
+    5: optional AuxStateLegacy aux_state_legacy
 }
 
 /**
@@ -179,8 +201,14 @@ union Reference {
  * По сути, это переход в стейте конечного автомата.
  */
 struct MachineStateChange {
-    1: required AuxState      aux_state; /** Новый вспомогательный стейт автомата */
-    2: required EventBodies   events;    /** Список описаний событий, порождённых в результате обработки */
+    /** Новый вспомогательный стейт автомата */
+    3: optional AuxState      aux_state
+    /** Список описаний событий, порождённых в результате обработки */
+    4: optional EventBodies   events
+
+    // deprecated
+    1: optional AuxStateLegacy      aux_state_legacy
+    2: optional EventBodiesLegacy   events_legacy
 }
 
 /**
@@ -274,6 +302,29 @@ service Processor {
 
 }
 
+struct MachineEvent {
+    /** Пространство имён, в котором работает машина */
+    1: required base.Namespace ns
+    /** Основной идентификатор машины */
+    2: required base.ID  id
+    /** Событие машины */
+    3: required Event event
+}
+
+struct ModernizeEventResult {
+    /** Обновлённое представление события */
+    1: required EventBody event_payload
+}
+
+/**
+ * Сервис обновления устаревших представлений данных машины.
+ */
+service Modernizer {
+
+    ModernizeEventResult ModernizeEvent (1: MachineEvent ev) throws ()
+
+}
+
 enum Direction {
     forward  = 1
     backward = 2
@@ -331,36 +382,48 @@ service Automaton {
      * Если машина с таким ID уже существует, то кинется иключение MachineAlreadyExists.
      */
     void Start (1: base.Namespace ns, 2: base.ID id, 3: Args a)
-         throws (1: NamespaceNotFound ex1, 2: MachineAlreadyExists ex2, 3: MachineFailed ex3);
+        throws (1: NamespaceNotFound ex1, 2: MachineAlreadyExists ex2, 3: MachineFailed ex3);
 
     /**
      * Попытаться перевести определённый процесс автомата из ошибочного
      * состояния в штатное и продолжить его исполнение.
      */
     void Repair (1: MachineDescriptor desc, 2: Args a)
-         throws (1: NamespaceNotFound ex1, 2: MachineNotFound ex2, 3: MachineFailed ex3, 4: MachineAlreadyWorking ex4);
+        throws (1: NamespaceNotFound ex1, 2: MachineNotFound ex2, 3: MachineFailed ex3, 4: MachineAlreadyWorking ex4);
 
     /**
      * Попытаться перевести определённый процесс автомата из ошибочного
      * состояния в предыдущее штатное и продолжить его исполнение.
      */
     void SimpleRepair (1: base.Namespace ns, 2: Reference ref)
-         throws (1: NamespaceNotFound ex1, 2: MachineNotFound ex2, 3: MachineFailed ex3, 4: MachineAlreadyWorking ex4);
+        throws (1: NamespaceNotFound ex1, 2: MachineNotFound ex2, 3: MachineFailed ex3, 4: MachineAlreadyWorking ex4);
 
     /**
      * Совершить вызов и дождаться на него ответа.
      */
     CallResponse Call (1: MachineDescriptor desc, 2: Args a)
-         throws (1: NamespaceNotFound ex1, 2: MachineNotFound ex2, 3: MachineFailed ex3);
+        throws (1: NamespaceNotFound ex1, 2: MachineNotFound ex2, 3: MachineFailed ex3);
 
     /**
      * Метод возвращает _машину_ (Machine)
      */
     Machine GetMachine (1: MachineDescriptor desc)
-         throws (1: NamespaceNotFound ex1, 2: MachineNotFound ex2, 3: EventNotFound ex3);
+        throws (1: NamespaceNotFound ex1, 2: MachineNotFound ex2, 3: EventNotFound ex3);
 
+    /**
+     * Удалить машину вместе со всеми её событиями.
+     * Опубликованные в event sink события остаются нетронутыми.
+     */
     void Remove (1: base.Namespace ns, 2: base.ID id)
          throws (1: NamespaceNotFound ex1, 2: MachineNotFound ex2);
+
+    /**
+     * Принудительно обновить представления данных указанной машины.
+     * В частности: представления событий.
+     */
+    void Modernize (1: MachineDescriptor desc)
+       throws (1: NamespaceNotFound ex1, 2: MachineNotFound ex2);
+
 }
 
 /**

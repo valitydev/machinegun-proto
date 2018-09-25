@@ -9,9 +9,9 @@ TEMPLATES_PATH := .
 SERVICE_NAME := machinegun_proto
 
 # Build image tag to be used
-BUILD_IMAGE_TAG := 55e987e74e9457191a5b4a7c5dc9e3838ae82d2b
+BUILD_IMAGE_TAG := 585ec439a97bade30cfcebc36cefdb45f13f3372
 CALL_ANYWHERE := all submodules rebar-update compile clean distclean
-CALL_W_CONTAINER := $(CALL_ANYWHERE) test dev_test
+CALL_W_CONTAINER := $(CALL_ANYWHERE)
 
 all: compile
 
@@ -37,4 +37,4 @@ clean:
 
 distclean:
 	$(REBAR) clean -a
-	rm -rfv _build _builds _cache _steps _temp
+	rm -rfv _build
