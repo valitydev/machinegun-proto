@@ -1,4 +1,5 @@
 namespace erlang mg_base
+namespace java com.rbkmoney.machinegun.base
 
 /*
  * Базовые, наиболее общие определения
