@@ -10,3 +10,5 @@
 rebar3.crashdump
 include/*.hrl
 src/*.erl
+/.idea
+*.iml
