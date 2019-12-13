@@ -284,6 +284,35 @@ struct SignalResult {
 }
 
 /**
+ * Набор данных для обработки запроса на починку автомата.
+ */
+struct RepairArgs {
+    1: required Args     arg;     /** Данные вызова */
+    2: required Machine  machine; /** Данные по машине */
+}
+
+/**
+ * Результат обработки запроса на починку автомата.
+ */
+struct RepairResult {
+    1: required RepairResponse     response; /** Данные ответа */
+    2: required MachineStateChange change;   /** Изменения _машины_ */
+    3: required ComplexAction      action;   /** _Действие_, которое необходимо выполнить после обработки */
+}
+
+/**
+ * Ответ на запрос о починке автомата.
+ */
+typedef msgpack.Value RepairResponse
+
+/**
+ * Исключение при неуспешной обработке запроса на починку автомата.
+ */
+exception RepairFailed {
+    1: required msgpack.Value reason;
+}
+
+/**
  * Процессор переходов состояния ограниченного конечного автомата.
  *
  * В результате вызова каждого из методов сервиса должны появиться новое
@@ -300,6 +329,12 @@ service Processor {
      * Обработать внешний вызов и сформировать ответ на него.
      */
     CallResult ProcessCall (1: CallArgs a) throws ()
+
+    /**
+     * Обработать запрос на починку и сформировать ответ на него.
+     */
+    RepairResult ProcessRepair (1: RepairArgs a)
+        throws (1: RepairFailed ex1)
 
 }
 
@@ -386,11 +421,17 @@ service Automaton {
         throws (1: NamespaceNotFound ex1, 2: MachineAlreadyExists ex2, 3: MachineFailed ex3);
 
     /**
-     * Попытаться перевести определённый процесс автомата из ошибочного
-     * состояния в штатное и продолжить его исполнение.
+     * Попытаться перевести определённый процесс автомата из ошибочного состояния
+     * в штатное и, получив результат операции, продолжить его исполнение.
      */
-    void Repair (1: MachineDescriptor desc, 2: Args a)
-        throws (1: NamespaceNotFound ex1, 2: MachineNotFound ex2, 3: MachineFailed ex3, 4: MachineAlreadyWorking ex4);
+    RepairResponse Repair (1: MachineDescriptor desc, 2: Args a)
+        throws (
+            1: NamespaceNotFound ex1,
+            2: MachineNotFound ex2,
+            3: MachineFailed ex3,
+            4: MachineAlreadyWorking ex4,
+            5: RepairFailed ex5
+        );
 
     /**
      * Попытаться перевести определённый процесс автомата из ошибочного
