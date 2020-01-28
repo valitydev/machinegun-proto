@@ -9,7 +9,7 @@ TEMPLATES_PATH := .
 SERVICE_NAME := machinegun_proto
 
 # Build image tag to be used
-BUILD_IMAGE_TAG := 585ec439a97bade30cfcebc36cefdb45f13f3372
+BUILD_IMAGE_TAG := 4536c31941b9c27c134e8daf0fd18848809219c9
 CALL_ANYWHERE := \
         all submodules rebar-update compile clean distclean \
         java.compile java.deploy

@@ -32,11 +32,6 @@ typedef Content AuxState
 
 typedef msgpack.Value Args
 
-// deprecated
-typedef msgpack.Value EventBodyLegacy
-typedef list<EventBodyLegacy> EventBodiesLegacy
-typedef msgpack.Value AuxStateLegacy
-
 /**
  * Произвольное событие, продукт перехода в новое состояние.
  */
@@ -104,8 +99,9 @@ struct Machine {
      */
     6: optional base.Timestamp timer;
 
-    // deprecated
-    5: optional AuxStateLegacy aux_state_legacy
+    // deallocated / reserved
+    // 5: optional AuxStateLegacy aux_state_legacy
+
 }
 
 /**
@@ -207,9 +203,9 @@ struct MachineStateChange {
     /** Список описаний событий, порождённых в результате обработки */
     4: optional EventBodies   events
 
-    // deprecated
-    1: optional AuxStateLegacy      aux_state_legacy
-    2: optional EventBodiesLegacy   events_legacy
+    // deprecated / reserved
+    // 1: optional AuxStateLegacy      aux_state_legacy
+    // 2: optional EventBodiesLegacy   events_legacy
 }
 
 /**
