@@ -1,7 +1,7 @@
 #!groovy
 // -*- mode: groovy -*-
 
-build('machinegun-proto', 'docker-host') {
+build('machinegun_proto', 'docker-host') {
 
     checkoutRepo()
     loadBuildUtils()
