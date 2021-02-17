@@ -239,7 +239,6 @@ struct CallResult {
 union Signal {
     1: InitSignal     init;
     2: TimeoutSignal  timeout;
-    3: RepairSignal   repair;
 }
 
 /**
@@ -254,14 +253,6 @@ struct InitSignal {
  * Сигнал, информирующий об окончании ожидания по таймеру.
  */
 struct TimeoutSignal {}
-
-/**
- * Сигнал, информирующий о необходимости восстановить работу автомата,
- * опционально скорректировать своё состояние.
- */
-struct RepairSignal {
-    1: optional msgpack.Value  arg;
-}
 
 /**
  * Набор данных для обработки сигнала.
