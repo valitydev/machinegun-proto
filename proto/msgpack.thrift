@@ -1,5 +1,5 @@
 namespace erlang mg_msgpack
-namespace java com.rbkmoney.machinegun.msgpack
+namespace java dev.vality.machinegun.msgpack
 
 /**
  * Значение в msgpack, согласно [спецификации](https://github.com/msgpack/msgpack/blob/master/spec.md).

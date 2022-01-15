@@ -1,5 +1,5 @@
 namespace erlang mg_evsink
-namespace java com.rbkmoney.machinegun.eventsink
+namespace java dev.vality.machinegun.eventsink
 
 /**
  * Определения структур для поддержания взаимодействия с потребителями

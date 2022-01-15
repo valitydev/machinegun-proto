@@ -1,5 +1,5 @@
 namespace erlang mg_stateproc
-namespace java com.rbkmoney.machinegun.stateproc
+namespace java dev.vality.machinegun.stateproc
 
 /**
  * Определения структур и сервисов для поддержания взаимодействия со

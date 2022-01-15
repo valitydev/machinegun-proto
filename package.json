@@ -1,6 +1,0 @@
-{
-  "name": "machinegun_proto",
-  "version": "1.0.0",
-  "description": "Machinegun thrift protocol",
-  "private": true
-}
