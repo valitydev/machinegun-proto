@@ -61,6 +61,16 @@
 
     <build>
         <finalName>${project.artifactId}</finalName>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/proto</directory>
+                <targetPath>${project.build.outputDirectory}/proto</targetPath>
+                <includes>
+                    <include>*.thrift</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
         <plugins>
             <!-- THRIFT -->
             <plugin>
