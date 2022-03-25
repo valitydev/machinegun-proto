@@ -12,3 +12,7 @@ include/*.hrl
 src/*.erl
 /.idea
 *.iml
+
+# frontend
+node_modules
+lib
