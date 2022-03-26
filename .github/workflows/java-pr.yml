@@ -1,9 +1,9 @@
-name: Maven Build Artifact
+name: Java build
 
 on:
   pull_request:
     branches:
-      - '*'
+      - "*"
 
 jobs:
   build:
