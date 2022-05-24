@@ -1,10 +1,10 @@
-name: Maven Deploy Artifact
+name: Java deploy
 
 on:
   push:
     branches:
-      - 'master'
-      - 'main'
+      - "master"
+      - "main"
 
 jobs:
   deploy:
