@@ -167,7 +167,6 @@ struct RemoveAction {}
  */
 union Reference {
     1: base.ID  id;   /** Основной идентификатор процесса автомата */
-    2: base.Tag tag;  /** Ассоциация */
 }
 
 /**
