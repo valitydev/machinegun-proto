@@ -34,7 +34,7 @@ union MachineLifecycleEvent {
 
 struct MachineLifecycleCreatedEvent {}
 struct MachineLifecycleFailedEvent {
-    1: optional string exception // human readable exception ??
+    1: optional string message // human readable exception ??
 }
 struct MachineLifecycleRepairedEvent {}
 struct MachineLifecycleRemovedEvent {}
