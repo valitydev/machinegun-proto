@@ -11,6 +11,16 @@ namespace java dev.vality.machinegun.lifesink
 include "base.thrift"
 include "msgpack.thrift"
 
+union MachineStatus {
+    1: MachineStatusWorking working
+    2: MachineStatusFailed  failed
+}
+
+struct MachineStatusWorking {}
+struct MachineStatusFailed {
+    1: optional string reason
+}
+
 struct LifecycleEvent {
     1: required base.Namespace     machine_ns     /* Идентификатор пространства имён, породившего событие */
     2: required base.ID            machine_id     /* Идентификатор машины, породившей событие */
@@ -26,15 +36,13 @@ union LifecycleEventData {
 }
 
 union MachineLifecycleEvent {
-    1: MachineLifecycleCreatedEvent  created
-    2: MachineLifecycleFailedEvent   failed
-    3: MachineLifecycleRepairedEvent repaired
-    4: MachineLifecycleRemovedEvent  removed
+    1: MachineLifecycleCreatedEvent       created
+    2: MachineLifecycleStatusChangedEvent status_changed
+    3: MachineLifecycleCreatedEvent       removed
 }
 
 struct MachineLifecycleCreatedEvent {}
-struct MachineLifecycleFailedEvent {
-    1: optional string message // human readable exception ??
+struct MachineLifecycleStatusChangedEvent {
+   1: required MachineStatus new_status
 }
-struct MachineLifecycleRepairedEvent {}
 struct MachineLifecycleRemovedEvent {}
