@@ -38,7 +38,7 @@ union LifecycleEventData {
 union MachineLifecycleEvent {
     1: MachineLifecycleCreatedEvent       created
     2: MachineLifecycleStatusChangedEvent status_changed
-    3: MachineLifecycleCreatedEvent       removed
+    3: MachineLifecycleRemovedEvent       removed
 }
 
 struct MachineLifecycleCreatedEvent {}
