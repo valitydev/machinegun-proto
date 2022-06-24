@@ -9,17 +9,9 @@ namespace java dev.vality.machinegun.lifesink
 // Loosely inspired by valitydev/machinegun-core/include/pulse.hrl
 
 include "base.thrift"
-include "msgpack.thrift"
+include "state_processing.thrift"
 
-union MachineStatus {
-    1: MachineStatusWorking working
-    2: MachineStatusFailed  failed
-}
-
-struct MachineStatusWorking {}
-struct MachineStatusFailed {
-    1: optional string reason
-}
+typedef state_processing.MachineStatus MachineStatus;
 
 struct LifecycleEvent {
     1: required base.Namespace     machine_ns     /* Идентификатор пространства имён, породившего событие */

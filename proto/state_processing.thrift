@@ -64,6 +64,19 @@ struct Event {
 typedef list<Event> History;
 
 /**
+ * Упрощенные сведения о статусе машины
+ */
+union MachineStatus {
+    1: MachineStatusWorking working
+    2: MachineStatusFailed  failed
+}
+
+struct MachineStatusWorking {}
+struct MachineStatusFailed {
+    1: optional string reason
+}
+
+/**
  * Машина — конечный автомат, обрабатываемый State Processor'ом.
  */
 struct Machine {
@@ -86,6 +99,11 @@ struct Machine {
      * Диапазон с которым была запрошена история машины.
      */
     4: required HistoryRange history_range;
+
+    /**
+     * Упрощенный статус машины
+     */
+    8: optional MachineStatus status;
 
     /**
      * Вспомогательное состояние — это некоторый набор данных, характеризующий состояние,
