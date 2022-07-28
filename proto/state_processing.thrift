@@ -233,6 +233,7 @@ struct CallResult {
 union Signal {
     1: InitSignal     init;
     2: TimeoutSignal  timeout;
+    3: NotificationSignal notification;
 }
 
 /**
@@ -247,6 +248,13 @@ struct InitSignal {
  * Сигнал, информирующий об окончании ожидания по таймеру.
  */
 struct TimeoutSignal {}
+
+/**
+ * Сигнал, информирующий о свершении события.
+ */
+struct NotificationSignal {
+    1: required Args args
+}
 
 /**
  * Набор данных для обработки сигнала.
@@ -380,6 +388,13 @@ struct HistoryRange {
     3: optional Direction direction = Direction.forward
 }
 
+// Уникальный в рамках неймспейса идентификатор нотификации
+typedef string NotificationID
+
+struct NotifyResponse {
+    1: required NotificationID id
+}
+
 /**
  * Сервис управления процессами автоматов, отвечающий за реализацию желаемых
  * действий и поддержку состояния процессоров.
@@ -438,15 +453,21 @@ service Automaton {
      * Опубликованные в event sink события остаются нетронутыми.
      */
     void Remove (1: base.Namespace ns, 2: base.ID id)
-         throws (1: NamespaceNotFound ex1, 2: MachineNotFound ex2);
+        throws (1: NamespaceNotFound ex1, 2: MachineNotFound ex2);
 
     /**
      * Принудительно обновить представления данных указанной машины.
      * В частности: представления событий.
      */
     void Modernize (1: MachineDescriptor desc)
-       throws (1: NamespaceNotFound ex1, 2: MachineNotFound ex2);
+        throws (1: NamespaceNotFound ex1, 2: MachineNotFound ex2);
 
+    /**
+     * Уведомить автомат о каком-либо событии.
+     * Например, обновлении состояния "дочернего" автомата.
+     */
+    NotifyResponse Notify (1: MachineDescriptor desc, 2: Args a)
+        throws (1: NamespaceNotFound ex1, 2: MachineNotFound ex2)
 }
 
 /**
