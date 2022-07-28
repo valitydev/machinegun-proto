@@ -253,7 +253,7 @@ struct TimeoutSignal {}
  * Сигнал, информирующий о свершении события.
  */
 struct NotificationSignal {
-    1: required Args args
+    1: required Args arguments
 }
 
 /**
