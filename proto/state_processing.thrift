@@ -250,10 +250,10 @@ struct InitSignal {
 struct TimeoutSignal {}
 
 /**
- * Сигнал, информирующий о свершении события.
+ * Сигнал, информирующий о поступлении нотификации.
  */
 struct NotificationSignal {
-    1: required Args arguments
+    1: required Args arg;
 }
 
 /**
