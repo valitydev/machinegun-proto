@@ -1,6 +1,6 @@
 {
   "name": "@vality/machinegun-proto",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "codegen": "thrift-codegen"
   },
@@ -21,6 +21,6 @@
   "main": "./lib/state_processing.js",
   "types": "./lib/state_processing.d.ts",
   "devDependencies": {
-    "@vality/thrift-codegen": "0.1.1-c81b4b7.0"
+    "@vality/thrift-codegen": "0.1.1-edd512f.0"
   }
 }
