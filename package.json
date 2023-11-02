@@ -21,6 +21,6 @@
   "main": "./lib/state_processing.js",
   "types": "./lib/state_processing.d.ts",
   "devDependencies": {
-    "@vality/thrift-codegen": "0.1.1-c81b4b7.0"
+    "@vality/thrift-codegen": "2.3.2"
   }
 }
