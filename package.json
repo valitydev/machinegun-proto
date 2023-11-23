@@ -2,7 +2,7 @@
   "name": "@vality/machinegun-proto",
   "version": "1.0.0",
   "scripts": {
-    "codegen": "thrift-codegen"
+    "codegen": "thrift-codegen --i ./proto --n state_processing"
   },
   "publishConfig": {
     "access": "public",
@@ -12,15 +12,27 @@
     "type": "git",
     "url": "git+https://github.com/valitydev/machinegun-proto.git"
   },
+  "exports": {
+    ".": "./dist/thrift-codegen.bundle.js",
+    "./metadata.json": "./dist/metadata.json",
+    "./package.json": "./package.json"
+  },
   "license": "Apache-2.0",
   "homepage": "https://github.com/valitydev/machinegun-proto#readme",
   "files": [
-    "lib/**/*.{js,d.ts,json}",
+    "dist/**/*.{js,d.ts,json}",
     "**/*.thrift"
   ],
-  "main": "./lib/state_processing.js",
-  "types": "./lib/state_processing.d.ts",
+  "main": "./dist/thrift-codegen.bundle.js",
+  "types": "index.d.ts",
+  "typesVersions": {
+    ">=4.6": {
+      "*": [
+        "dist/types/*"
+      ]
+    }
+  },
   "devDependencies": {
-    "@vality/thrift-codegen": "0.1.1-c81b4b7.0"
+    "@vality/thrift-codegen": "2.3.2"
   }
 }
