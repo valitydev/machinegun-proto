@@ -1,5 +1,6 @@
 namespace erlang mg_lifesink
 namespace java dev.vality.machinegun.lifesink
+namespace elixir MachinegunProto.LifeSink
 
 /**
  * Определения структур для поддержания взаимодействия с потребителями

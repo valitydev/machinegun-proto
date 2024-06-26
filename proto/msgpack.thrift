@@ -1,5 +1,6 @@
 namespace erlang mg_msgpack
 namespace java dev.vality.machinegun.msgpack
+namespace elixir MachinegunProto.MsgPack
 
 /**
  * Значение в msgpack, согласно [спецификации](https://github.com/msgpack/msgpack/blob/master/spec.md).

@@ -1,5 +1,6 @@
 namespace erlang mg_stateproc
 namespace java dev.vality.machinegun.stateproc
+namespace elixir MachinegunProto.StateProcessing
 
 /**
  * Определения структур и сервисов для поддержания взаимодействия со
