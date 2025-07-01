@@ -44,6 +44,6 @@
   "license": "Apache-2.0",
   "homepage": "https://github.com/valitydev/machinegun-proto#readme",
   "devDependencies": {
-    "@vality/thrift-codegen": "^3.0.0"
+    "@vality/thrift-codegen": "^3.1.0"
   }
 }
