@@ -14,6 +14,6 @@ jobs:
       - uses: valitydev/action-setup-thrift@v1
       - name: Codegen
         run: npm run codegen
-      - uses: valitydev/action-frontend/publish@v1
+      - uses: valitydev/action-frontend/publish@v2
         with:
           npm-token: ${{ secrets.NPM_TOKEN }}
