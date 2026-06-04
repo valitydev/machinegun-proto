@@ -1,16 +1,11 @@
-name: 'Frontend: PR'
+name: "Frontend: PR"
 
 on:
   pull_request:
-    branches: ['*']
+
+permissions:
+  contents: read
 
 jobs:
   check:
-    name: Check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: valitydev/action-frontend/setup-install@v2
-      - uses: valitydev/action-setup-thrift@v1
-      - name: Codegen
-        run: npm run codegen
+    uses: valitydev/action-frontend/.github/workflows/proto-check.yml@v3
