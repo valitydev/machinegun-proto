@@ -1,5 +1,6 @@
 namespace erlang mg_base
 namespace java dev.vality.machinegun.base
+namespace elixir MachinegunProto.Base
 
 /*
  * Базовые, наиболее общие определения

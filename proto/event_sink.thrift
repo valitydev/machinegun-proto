@@ -1,5 +1,6 @@
 namespace erlang mg_evsink
 namespace java dev.vality.machinegun.eventsink
+namespace elixir MachinegunProto.EventSink
 
 /**
  * Определения структур для поддержания взаимодействия с потребителями
