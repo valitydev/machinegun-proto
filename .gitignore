@@ -15,4 +15,5 @@ src/*.erl
 
 # frontend
 node_modules
-lib
+dist
+generated
